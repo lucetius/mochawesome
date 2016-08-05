@@ -2,6 +2,7 @@
 var moment = require('moment');
 var path = require('path');
 var fs = require('fs');
+var showdown = require('showdown');
 
 function getDurationObj(durationInMilliseconds) {
   'use strict';
@@ -76,6 +77,17 @@ Handlebars.registerHelper('dateFormat', function(context, format) {
     return moment(context).fromNow();
   } else {
     return moment(context).format(format);
+  }
+});
+
+Handlebars.registerHelper('errorFormat', function(name, message) {
+  'use strict';
+  if (name === 'AssertionError') {
+    var converter = new showdown.Converter();
+    return converter.makeHtml(message);
+  }
+  else {
+    return name + ': ' + message;
   }
 });
 
